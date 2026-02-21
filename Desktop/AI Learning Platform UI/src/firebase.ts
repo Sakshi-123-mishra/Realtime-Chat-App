@@ -8,16 +8,24 @@ import {
 } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
-// Firebase configuration (Better: env se lo, but abhi direct ok hai)
+// Firebase configuration loaded from environment variables
+// SECURITY: Keys are stored in .env (not in version control)
 const firebaseConfig = {
-  apiKey: "AIzaSyADPFl6S7-kd6lA4H0o2AXRH1-_W58U79k",
-  authDomain: "e-learn-66675.firebaseapp.com",
-  projectId: "e-learn-66675",
-  storageBucket: "e-learn-66675.firebasestorage.app",
-  messagingSenderId: "1070985955115",
-  appId: "1:1070985955115:web:71cfe7f15f18f1496d676e",
-  measurementId: "G-1739E5XBP0",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
+
+// Validate that required Firebase credentials are available
+if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
+  console.error(
+    "Firebase configuration is incomplete. Please check your .env file and ensure all VITE_FIREBASE_* variables are set."
+  );
+}
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
